@@ -1,4 +1,6 @@
 mod cli;
+mod core;
+mod fs;
 
 fn main() -> anyhow::Result<()> {
     let cli = cli::build_cli();
