@@ -1,3 +1,5 @@
+use std::path::PathBuf;
+
 use clap::{Arg, ArgMatches, Command};
 
 pub fn command() -> Command {
@@ -7,30 +9,34 @@ pub fn command() -> Command {
             Arg::new("input")
                 .short('i')
                 .long("input")
+                .required(true)
+                .value_parser(clap::value_parser!(PathBuf))
                 .help("Input image path"),
         )
         .arg(
             Arg::new("output")
                 .short('o')
                 .long("output")
+                .required(true)
+                .value_parser(clap::value_parser!(PathBuf))
                 .help("Output folder path"),
         )
 }
 
 pub fn run(matches: &ArgMatches) -> anyhow::Result<()> {
-    let raw_input: Option<&String> = matches.get_one::<String>("input");
-    let raw_output: Option<&String> = matches.get_one::<String>("output");
+    let input: &PathBuf = matches.get_one("input").unwrap();
+    let output: &PathBuf = matches.get_one("output").unwrap();
 
-    if raw_input.is_none() {
-        anyhow::bail!("Input image argument is required");
+    if !input.exists() {
+        anyhow::bail!("Input image path does not exist");
     }
-    if raw_output.is_none() {
-        anyhow::bail!("Output path argument is required");
+    if !output.exists() {
+        anyhow::bail!("Output path does not exist");
     }
 
-    let input: &String = raw_input.unwrap();
-    let output: &String = raw_output.unwrap();
-
-    println!("Attempt to convert\nInput: {}\nOutput: {}", input, output);
+    println!(
+        "Attempt to convert\nInput: {:?}\nOutput: {:?}",
+        input, output
+    );
     Ok(())
 }
