@@ -6,8 +6,8 @@ use crate::core;
 use crate::fs;
 
 pub fn command() -> Command {
-    Command::new("convert")
-        .about("Converts an input image into a output ASCII version")
+    Command::new("generate")
+        .about("Generates an ASCII version of the input image")
         .arg(
             Arg::new("input")
                 .short('i')
@@ -39,7 +39,7 @@ pub fn run(matches: &ArgMatches) -> anyhow::Result<()> {
 
     let spinner = indicatif::ProgressBar::new_spinner();
 
-    spinner.set_message("Converting to image to ASCII...");
+    spinner.set_message("Generating ASCII version...");
     spinner.enable_steady_tick(std::time::Duration::from_millis(100));
 
     let gen_ascii: Vec<char> = core::ascii::gen_from_image(input)?;
