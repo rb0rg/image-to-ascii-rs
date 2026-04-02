@@ -2,6 +2,9 @@ use std::path::PathBuf;
 
 use clap::{Arg, ArgMatches, Command};
 
+use crate::core;
+use crate::fs;
+
 pub fn command() -> Command {
     Command::new("convert")
         .about("Converts an input image into a output ASCII version")
@@ -34,9 +37,13 @@ pub fn run(matches: &ArgMatches) -> anyhow::Result<()> {
         anyhow::bail!("Output path does not exist");
     }
 
-    println!(
-        "Attempt to convert\nInput: {:?}\nOutput: {:?}",
-        input, output
-    );
+    let gen_ascii: Vec<char> = core::ascii::gen_from_image(input)?;
+
+    let write_output = output
+        .join(input.file_stem().unwrap())
+        .with_extension("txt");
+
+    fs::ascii_to_txt::write(&gen_ascii, &write_output)?;
+
     Ok(())
 }
