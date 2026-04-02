@@ -4,7 +4,7 @@ mod commands;
 
 pub fn build_cli() -> Command {
     Command::new("image-to-ascii")
-        .about("")
+        .about("A CLI tool to generate ASCII arts from a input image.")
         .subcommand(commands::generate::command())
 }
 
