@@ -52,7 +52,7 @@ pub fn run(matches: &ArgMatches) -> anyhow::Result<()> {
 
     fs::ascii_to_txt::write(&gen_ascii, &write_output)?;
 
-    spinner.finish_with_message("Conversion complete!");
+    spinner.finish_with_message("Successfully generated ASCII version");
 
     Ok(())
 }
